@@ -1,0 +1,33 @@
+package com.enviro.assessment.grad001.senelenyaba.services.wastecategory;
+
+import com.enviro.assessment.grad001.senelenyaba.utils.ResponseResult;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@AllArgsConstructor
+@RestController
+@RequestMapping(value = "/api/waste-category", produces = "application/json")
+public class WasteCategoryController {
+    private WasteCategoryService wasteCategoryService;
+
+    @PostMapping()
+    public ResponseEntity<ResponseResult> saveWasteCategory(@RequestBody WasteCategory wasteCategory){
+        String correlationId = UUID.randomUUID().toString();
+        return wasteCategoryService.save(wasteCategory, correlationId);
+    }
+
+    @GetMapping()
+    public ResponseEntity<ResponseResult> listAllWasteCategories(){
+        return wasteCategoryService.listAllWasteCategories();
+    }
+
+    @PutMapping()
+    public ResponseEntity<ResponseResult> updateWasteCategory(@RequestBody WasteCategory wasteCategory){
+        String correlationId = UUID.randomUUID().toString();
+        return wasteCategoryService.updateWasteCategory(wasteCategory, correlationId);
+    }
+}
