@@ -29,4 +29,10 @@ public class WasteCategoryController {
         String correlationId = UUID.randomUUID().toString();
         return wasteCategoryService.updateWasteCategory(wasteCategory, correlationId);
     }
+
+    @DeleteMapping()
+    public ResponseEntity<ResponseResult> deleteWasteCategory(@RequestParam long id){
+        String correlationId = UUID.randomUUID().toString();
+        return wasteCategoryService.deleteWasteCategory(id, correlationId);
+    }
 }

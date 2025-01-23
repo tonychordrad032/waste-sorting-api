@@ -1,5 +1,11 @@
 package com.enviro.assessment.grad001.senelenyaba.utils;
+
+import lombok.Getter;
+import lombok.Setter;
+
 // I created this class to customize my response
+@Getter
+@Setter
 public class ResponseResult {
     private int statusCode;
     private String message;

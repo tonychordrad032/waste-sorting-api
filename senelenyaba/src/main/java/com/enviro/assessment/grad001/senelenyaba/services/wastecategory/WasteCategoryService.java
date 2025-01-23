@@ -22,7 +22,7 @@ public class WasteCategoryService {
 
             if(checkIfExist != null){
                 log.warn("cid => {} Waste category with name {} already exists", correlationId, wasteCategory.getName());
-                return ResponseEntity.ok(new ResponseResult(409, "Waste category with name {} already exists", null));
+                return ResponseEntity.ok(new ResponseResult(409, "Waste category with name : " + wasteCategory.getName() + ", already exists", null));
             }
 
             wasteCategoryRepository.save(wasteCategory);
@@ -31,7 +31,7 @@ public class WasteCategoryService {
             return ResponseEntity.ok(new ResponseResult(201, "Waste category was successfully added", wasteCategory));
         }catch (Exception e){
             log.error("cid => {} Error while adding waste category", correlationId, e);
-            return ResponseEntity.badRequest().body(new ResponseResult(500,e.getMessage(), null));
+            return ResponseEntity.badRequest().body(new ResponseResult(400,e.getMessage(), null));
         }finally {
             log.info("cid => {} Finish adding category", correlationId);
         }
@@ -39,9 +39,13 @@ public class WasteCategoryService {
 
     // List all waste categories
     public ResponseEntity<ResponseResult> listAllWasteCategories(){
+        log.info("Start Listing waste categories");
         List<WasteCategory> categoryList = wasteCategoryRepository.findAll();
+        log.info("Finish Listing waste categories");
         return ResponseEntity.ok(new ResponseResult(200, "All waste categories", categoryList));
     }
+
+
 
     // Update the waster category
     public ResponseEntity<ResponseResult> updateWasteCategory(WasteCategory wasteCategory, String correlationId){
@@ -71,10 +75,35 @@ public class WasteCategoryService {
 
         }catch (Exception e){
             log.error("cid => {} Error while adding waste category", correlationId, e);
-            return ResponseEntity.badRequest().body(new ResponseResult(500,e.getMessage(), null));
+            return ResponseEntity.badRequest().body(new ResponseResult(400,e.getMessage(), null));
         }finally {
             log.info("cid => {} Finish updating waste category", correlationId);
         }
     }
 
+
+    // Delete waste category
+    public ResponseEntity<ResponseResult> deleteWasteCategory(long id, String correlationId){
+        try {
+            log.info("cid => {} Start deleting waste category", correlationId);
+            WasteCategory wasteCategory = wasteCategoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Waste category not found"));
+
+            if (wasteCategory == null){
+                log.warn("cid => {} Waste Category with id {} does not exist", correlationId, id);
+                return ResponseEntity.notFound().build();
+            }
+
+            wasteCategoryRepository.delete(wasteCategory);
+            wasteCategoryRepository.flush();
+
+            log.info("cid => {} Waste category was successfully deleted", correlationId);
+            return ResponseEntity.ok(new ResponseResult(200, "Waste category was successfully deleted", null));
+
+        }catch (Exception e){
+            log.error("cid => {} Error occurred while deleting waste category", correlationId, e);
+            return ResponseEntity.badRequest().body(new ResponseResult(400, e.getMessage(), null));
+        }finally {
+            log.info("cid => {} Finish deleting waste category");
+        }
+    }
 }
