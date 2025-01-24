@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
+// This is similar to the logic in WasteCategoryController. Refer to that class for detailed comments.
 
 @RestController
 @RequestMapping("/api/recycling-tip")

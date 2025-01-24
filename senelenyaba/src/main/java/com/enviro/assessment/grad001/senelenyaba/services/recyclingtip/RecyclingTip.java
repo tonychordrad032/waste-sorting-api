@@ -4,6 +4,7 @@ import com.enviro.assessment.grad001.senelenyaba.services.wastecategory.WasteCat
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+// This is similar to the code in DisposalGuideline. Refer to that class for detailed comments.
 
 @Data
 @Entity(name = "tbl_recycling_tips")

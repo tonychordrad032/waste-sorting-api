@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+// This is similar to the logic in WasteCategoryService. Refer to that class for detailed comments.
 
 @Log4j2
 @Service
