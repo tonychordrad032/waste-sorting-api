@@ -3,6 +3,7 @@
 
 ## Postman Collection
 The postman collection for testing is included in the directory [postman-collection](src%2Fpostman-collection)
+Swagger UI http://localhost:8080/swagger-ui/index.html#/
 
 ## Purpose
 The `WasteCategory` entity represents a category of waste in the application. It is used to store and manage information about different waste types, such as their name and description.
