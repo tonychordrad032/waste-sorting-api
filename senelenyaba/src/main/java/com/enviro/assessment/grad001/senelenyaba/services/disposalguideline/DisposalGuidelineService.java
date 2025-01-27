@@ -51,14 +51,6 @@ public class DisposalGuidelineService {
     public ResponseEntity<ResponseResult> updateDisposalGuideline(DisposalGuideline disposalGuideline, String correlationId){
         try {
             log.info("cid => {} Start updating disposal guideline", correlationId);
-
-            // Fetching the existing disposal guideline to update
-            DisposalGuideline updateDisposalGuideline = disposalGuidelineRepository.findById(disposalGuideline.getId()).orElseThrow();
-
-            // Mapping new object with the existing one
-            updateDisposalGuideline.setGuideline(disposalGuideline.getGuideline());
-            updateDisposalGuideline.setWasteCategory(disposalGuideline.getWasteCategory());
-
             // Checking if the category name entered does not exist in the database
             DisposalGuideline checkIfExist = disposalGuidelineRepository.findByGuideline(disposalGuideline.getGuideline());
 
@@ -66,6 +58,13 @@ public class DisposalGuidelineService {
                 log.warn("cid => {} Disposal guideline with name {} already exists", correlationId, disposalGuideline.getGuideline());
                 return ResponseEntity.ok(new ResponseResult(409, "Disposal guideline with name  already exists", null));
             }
+
+            // Fetching the existing disposal guideline to update
+            DisposalGuideline updateDisposalGuideline = disposalGuidelineRepository.findById(disposalGuideline.getId()).orElseThrow();
+
+            // Mapping new object with the existing one
+            updateDisposalGuideline.setGuideline(disposalGuideline.getGuideline());
+            updateDisposalGuideline.setWasteCategory(disposalGuideline.getWasteCategory());
 
             // Save changes to the database
             disposalGuidelineRepository.save(updateDisposalGuideline);

@@ -56,6 +56,14 @@ public class WasteCategoryService {
         try {
             log.info("cid => {} Start updating waste category", correlationId); // Log the start of the update operation.
 
+
+            // Check if the updated category name already exists.
+            WasteCategory checkIfExist = wasteCategoryRepository.findByName(wasteCategory.getName());
+            if (checkIfExist != null) {
+                log.warn("cid => {} Waste category with name {} already exists", correlationId, wasteCategory.getName()); // Log a warning if a duplicate name is found.
+                return ResponseEntity.ok(new ResponseResult(409, "Waste category with name {} already exists", null)); // Return a 409 Conflict response.
+            }
+
             // Fetch the existing waste category to update.
             WasteCategory updateWasteCategory = wasteCategoryRepository.findById(wasteCategory.getId())
                     .orElseThrow(); // Throws an exception if the category does not exist.
@@ -64,12 +72,6 @@ public class WasteCategoryService {
             updateWasteCategory.setName(wasteCategory.getName());
             updateWasteCategory.setDescription(wasteCategory.getDescription());
 
-            // Check if the updated category name already exists.
-            WasteCategory checkIfExist = wasteCategoryRepository.findByName(wasteCategory.getName());
-            if (checkIfExist != null) {
-                log.warn("cid => {} Waste category with name {} already exists", correlationId, wasteCategory.getName()); // Log a warning if a duplicate name is found.
-                return ResponseEntity.ok(new ResponseResult(409, "Waste category with name {} already exists", null)); // Return a 409 Conflict response.
-            }
 
             // Save the updated waste category to the database.
             wasteCategoryRepository.save(updateWasteCategory);

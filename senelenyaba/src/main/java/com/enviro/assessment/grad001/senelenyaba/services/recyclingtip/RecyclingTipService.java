@@ -48,16 +48,17 @@ public class RecyclingTipService {
     public ResponseEntity<ResponseResult> updateRecyclingTip(RecyclingTip recyclingTip, String correlationId){
         try {
             log.info("cid => {} Start updating recycling tip", correlationId);
-            RecyclingTip updateRecyclingTip = recyclingTipRepository.findById(recyclingTip.getId()).orElseThrow(() -> new RuntimeException("Recycling tip with id: "+recyclingTip.getId()+" is not found"));
-
-            updateRecyclingTip.setTip(recyclingTip.getTip());
-            updateRecyclingTip.setWasteCategory(recyclingTip.getWasteCategory());
 
             RecyclingTip checkIfExist = recyclingTipRepository.findByTip(recyclingTip.getTip());
             if (checkIfExist != null){
                 log.warn("cid => {} Recycling tip already exist", correlationId);
                 return ResponseEntity.status(409).body(new ResponseResult(409, "Recycling tip already exist", null));
             }
+
+            RecyclingTip updateRecyclingTip = recyclingTipRepository.findById(recyclingTip.getId()).orElseThrow(() -> new RuntimeException("Recycling tip with id: "+recyclingTip.getId()+" is not found"));
+
+            updateRecyclingTip.setTip(recyclingTip.getTip());
+            updateRecyclingTip.setWasteCategory(recyclingTip.getWasteCategory());
 
             recyclingTipRepository.save(updateRecyclingTip);
             log.info("cid => {} Recycling tip was successfully updated", correlationId);
